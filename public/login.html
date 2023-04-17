@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login/Register</title>
+</head>
+<body>
+  <h1>Login</h1>
+  <form action="/auth/login" method="POST">
+    <label>
+      Username:
+      <input type="text" name="username" required>
+    </label>
+    <br>
+    <label>
+      Password:
+      <input type="password" name="password" required>
+    </label>
+    <br>
+    <button type="submit">Login</button>
+  </form>
+  <br>
+  <h1>Register</h1>
+  <form action="/auth/register" method="POST">
+    <label>
+      Username:
+      <input type="text" name="username" required>
+    </label>
+    <br>
+    <label>
+      Password:
+      <input type="password" name="password" required>
+    </label>
+    <br>
+    <button type="submit">Register</button>
+  </form>
+</body>
+</html>
