@@ -1,5 +1,6 @@
-let currentChart = null;
-async function fetchAndRenderAccidentsChart(zipCode) {
+let currentChart4 = null;
+let currentChart5 = null;
+async function fetchAndRenderTrend4Chart(zipCode) {
     const response = await fetch(`/accidentsPerTimeIntervals/${zipCode}`);
     const data = await response.json();
 
@@ -105,12 +106,12 @@ async function fetchAndRenderAccidentsChart(zipCode) {
             }
         }
     });
-    currentChart = chart;
+    currentChart4 = chart;
     return chart;
 }
 
-async function updateAccidentsChart(zipCode) {
-    if (!currentChart) {
+async function updateTrend4Chart(zipCode) {
+    if (!currentChart4) {
         return;
     }
     const response = await fetch(`/accidentsPerTimeIntervals/${zipCode}`);
@@ -126,11 +127,88 @@ async function updateAccidentsChart(zipCode) {
     const x_vals = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5,
         17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5];
     const data_points = x_vals.map((k, i) => ({x: k, y: counts[i]}));
-    currentChart.data.datasets[0].data = data_points;
-    console.log(currentChart.data.datasets[0].data)
-    currentChart.options.plugins.title.text = `Number of Accidents vs Time Interval at ${zipCode}`;
-    currentChart.update();
+    currentChart4.data.datasets[0].data = data_points;
+    console.log(currentChart4.data.datasets[0].data)
+    currentChart4.options.plugins.title.text = `Number of Accidents vs Time Interval at ${zipCode}`;
+    currentChart4.update();
+}
+
+
+async function fetchAndRenderTrend5Chart(trafficFeature){
+
+    const response = await fetch(`/severityToTrafficCalming/${trafficFeature}`);
+    const data = await response.json();
+
+    const ctx = document.getElementById('severityChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['1', '2', '3', '4'],
+            datasets: [
+                {
+                    label: 'Severity Count',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                },
+            ],
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                title: {
+                    display: true,
+                    text: `Severity of accidents in presence of ${trafficFeature}`,
+
+                },
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Severity Level',
+                    },
+                    grid: {
+                        display: false,
+                    },
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Count',
+                    },
+                    grid: {
+                        display: false,
+                    },
+                },
+            },
+        },
+    });
+    currentChart5 = chart;
+    return chart;
 }
 
 
 
+async function updateTrend5Chart(trafficFeature) {
+
+
+    if (!currentChart5) {
+        return;
+    }
+    const response = await fetch(`/severityToTrafficCalming/${trafficFeature}`);
+    const data = await response.json();
+
+    currentChart5.data.datasets[0].data = data;
+    currentChart5.options.plugins.title.text = `Severity of accidents in presence of ${trafficFeature}`;
+    currentChart5.update();
+}
+
+function getSelectedTrafficFeature() {
+    const trafficFeaturesSelect = document.getElementById("trafficFeatures");
+    return trafficFeaturesSelect.value;
+}

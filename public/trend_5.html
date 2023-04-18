@@ -86,10 +86,23 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="graph">
-                        <canvas id="accidentsChart"></canvas>
-                        <label for="zipcode">Enter Zip Code:</label>
-                        <input type="text" id="zipcode" name="zipcode">
-                        <button onclick="updateAccidentsChart(document.getElementById('zipcode').value)">Update</button>
+                        <select id="trafficFeatures" multiple>
+                            <option value="TRAFFIC_SIGNAL">Traffic Signal</option>
+                            <option value="TRAFFIC_CALMING">Traffic Calming</option>
+                            <option value="GIVEWAY">Give Way</option>
+                            <option value="JUNCTION">Junction</option>
+                            <option value="RAILWAY">Railway</option>
+                            <option value="ROUNDABOUT">Roundabout</option>
+                            <option value="NO_EXIT">No Exit</option>
+                            <option value="AMENITY">Amenity</option>
+                            <option value="STATION">Station</option>
+                            <option value="BUMP">Bump</option>
+                            <option value="STOP">Stop</option>
+                            <option value="CROSSING">Crossing</option>
+                            <option value="TURNING_LOOP">Turning Loop</option>
+                        </select>
+                        <button onclick="updateTrend5Chart(getSelectedTrafficFeature())">Update Chart</button>
+                        <canvas id="severityChart"></canvas>
 
 
 
@@ -104,6 +117,6 @@
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!--    bootstrap.load_js()-->
 <script src="static/js/render_charts.js"></script>
-<script>fetchAndRenderAccidentsChart("33126")</script>
+<script>fetchAndRenderTrend5Chart("CROSSING")</script>
 </body>
 </html>
