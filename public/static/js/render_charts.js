@@ -7,9 +7,9 @@ async function fetchAndRenderAccidentsChart(zipCode) {
     // Generate hourly labels for the x-axis
     const labels = [];
     for (let i = 0; i < 24; i++) {
-        const startHour = i.toString().padStart(2, '0');
-        const endHour = (i + 1).toString().padStart(2, '0');
-        labels.push(`${startHour}:00-${endHour}:00`);
+        const startHour = i;
+        const endHour = i + 1;
+        labels.push(`${startHour}`);
     }
 
     // Create an array of counts initialized with 0
@@ -20,7 +20,11 @@ async function fetchAndRenderAccidentsChart(zipCode) {
         const hour = parseInt(d[0].substring(0, 2), 10);
         counts[hour] = d[1];
     });
-
+    console.log(counts)
+    // Histogram code from: https://leimao.github.io/blog/JavaScript-ChartJS-Histogram/
+    const x_vals = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5,
+                             17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5]
+    const data_points = x_vals.map((k, i) => ({x: k, y: counts[i]}));
     const ctx = document.getElementById('accidentsChart').getContext('2d');
     const chart = new Chart(ctx, {
         type: 'bar',
@@ -29,22 +33,66 @@ async function fetchAndRenderAccidentsChart(zipCode) {
             datasets: [
                 {
                     label: 'Number of Accidents',
-                    data: counts,
+                    data: data_points,
                     backgroundColor: 'rgba(75, 192, 192, 0.5)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1,
+                    barPercentage: 1,
+                    categoryPercentage: 1,
                 },
             ],
         },
         options: {
             scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 1, // Use 1 or an appropriate number for your data scale
+                x: {
+                    type: 'linear',
+                    offset: false,
+                    grid: {
+                        offset: false
                     },
+                    ticks: {
+                        stepSize: 1
+                    },
+                    title: {
+                        display: true,
+                        text: 'Hours',
+                        font: {
+                            size: 14
+                        }
+                    }
                 },
+                y: {
+                    // beginAtZero: true
+                    title: {
+                        display: true,
+                        text: 'Accidents',
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
             },
-        },
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                tooltip: {
+                    callbacks: {
+                        title: (items) => {
+                            if (!items.length) {
+                                return '';
+                            }
+                            const item = items[0];
+                            const x = item.parsed.x;
+                            const min = x - 0.5;
+                            const max = x + 0.5;
+                            return `Hours: ${min} - ${max}`;
+                        }
+                    }
+                }
+            }
+        }
     });
 }
+
+
