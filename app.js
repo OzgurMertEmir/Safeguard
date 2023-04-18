@@ -1,6 +1,6 @@
 const express = require('express');
 const queryPreset = require('./queryPreset');
-const {init} = require('./server')
+const {init, runQuery} = require('./server')
 const path = require('path');
 const bodyParser = require('body-parser');
 const {validateUser, registerUser} = require('./auth')
@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
 init();
-
+// runQuery().catch(console.error);
 app.use(express.static('public'));
 
 app.listen(3000, () => {
@@ -46,7 +46,7 @@ app.post("/auth/login", async (req, res) => {
       res.send("Error registering user!");
     }
   });
-  
+
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
@@ -54,7 +54,7 @@ app.get('/', function(req, res) {
 app.get('/home', function(req, res) {
     res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
-  
+
 app.get('/severityToTimeIntervals', async (req, res) => {
   try {
     const result = await queryPreset.severityToTimeIntervals();
@@ -75,9 +75,9 @@ app.get('/severityToWeatherCondition', async (req, res) => {
     }
   });
 
-  app.get('/AccidentProbabilityPerDayInMornings', async (req, res) => {
+  app.get('/accidentProbabilityPerDayInMornings', async (req, res) => {
     try {
-      const result = await queryPreset.AccidentProbabilityPerDayInMornings();
+      const result = await queryPreset.accidentProbabilityPerDayInMornings();
       res.status(200).json(result.rows);
     } catch (err) {
       console.error(err);
@@ -85,9 +85,11 @@ app.get('/severityToWeatherCondition', async (req, res) => {
     }
   });
 
-  app.get('/AccidentCountsPerTimeIntervals', async (req, res) => {
+  app.get('/accidentsPerTimeIntervals/:zipCode', async (req, res) => {
     try {
-      const result = await queryPreset.AccidentCountsPerTimeIntervals();
+      const zipCode = req.params.zipCode;
+      const result = await queryPreset.accidentsPerTimeIntervals(zipCode);
+
       res.status(200).json(result.rows);
     } catch (err) {
       console.error(err);

@@ -20,4 +20,5 @@ async function init() {
 module.exports = {
   pool,
   init,
-}
+
+};

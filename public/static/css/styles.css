@@ -1,0 +1,126 @@
+/* Custom styles */
+:root{
+    --bg-color: #F2F3F4
+}
+
+@font-face {
+    font-family: 'Iter';
+    src: url("/static/fonts/Inter-SemiBold.ttf") format('truetype');
+    font-weight: 600;
+    font-style: normal
+
+}
+.sidenav {
+    height: 100%;
+    width: 15%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    /*background-color: var(--bg-color);*/
+    padding-top: 20px;
+
+}
+
+
+
+.sidenav a:hover {
+    /*color: #007bff;*/
+    color: purple;
+}
+
+.sidenav img {
+    max-width: 90%;
+    height: auto;
+    object-fit: cover;
+    padding: 0 10%;
+
+}
+
+.sidenav a {
+    padding: 0% 5% 10% 20%;
+    text-decoration: none;
+    font-size: 100%;
+    font-family: Iter, "Comic Sans MS", serif;
+    color: #5F6980;
+    display: block;
+}
+
+.dashboard{
+    padding: 10% 0 0 10%;
+    /*text-decoration: none;*/
+    font-size: 80%;
+    font-family: Iter, "Comic Sans MS", serif;
+
+
+}
+
+.main-content {
+    margin-left: 15%;
+    padding: 15px;
+    background-color: var(--bg-color);
+            /*border: 1px solid red;*/
+
+
+}
+
+.row {
+    margin-bottom: 15px;
+    /*border: 1px solid red;*/
+}
+
+.card_stats {
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 1.5rem; /* Increased border-radius for rounder blocks */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /*width: 20%*/
+
+}
+
+.stat_displays {
+    padding: 2rem;
+
+}
+
+.card-body {
+    padding: 2rem;
+    /*border: 1px solid red;*/
+
+
+
+}
+.graph {
+    /*border: 1px solid red;*/
+    min-height: 60vh;
+
+
+}
+
+.ad {
+    background-color: #131415;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 20vh;
+    color: #ffffff; /* Set the text color inside the card-ad to white */
+    padding: 1.25rem; /* Add padding similar to the card-body class */
+    display: flex;
+
+}
+
+.ad p{
+
+    width: 30%;
+    height: 100%;
+    /*border: 1px solid red;*/
+    font-size: 3.5vh;
+
+}
+
+/* Style for the last row (large block) */
+.last-row {
+  min-height: 80vh;
+
+    /* Adjust the min-height to take up more space on the page */
+}
