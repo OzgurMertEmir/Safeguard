@@ -168,7 +168,11 @@ async function severityToWeatherCondition() {
     const connection = await OracleDB.getConnection();
     try {
         const result = await connection.execute(
-            "SELECT weather_condition, count(*) FROM climate GROUP BY weather_condition"
+            `SELECT State, Weather_Condition, Severity, COUNT(*) AS Accident_Count
+            FROM accident 
+            WHERE Severity BETWEEN 1 AND 4
+            GROUP BY State, Weather_Condition, Severity 
+            ORDER BY  State, Weather_Condition, Severity`
         );
         return result;
     } finally {
@@ -177,14 +181,18 @@ async function severityToWeatherCondition() {
 }
 
 // Query 3: Which day of the week is the highest accident probability in the morning with different weather conditions for different states?
-async function accidentProbabilityPerDayInMornings(Weather_Condition, state) {
-    const client = await pool.connect();
+async function accidentProbabilityPerDayInMornings(weather, state) {
+    const connection = await OracleDB.getConnection();
     try {
-      client.query(
-          'Write query here'
-      );
+      const result = await connection.execute(
+          `SELECT TO_CHAR(start_time, 'DAY') AS day_of_week, COUNT(*) AS Accident_Count
+          FROM accident a join climate c on a.id=c.id join address ad on c.id=ad.id 
+          WHERE EXTRACT(HOUR FROM start_time) < 12 and Weather_Condition = :weather and State = :state
+          GROUP BY TO_CHAR(start_time, 'DAY')`,
+          { weather: weather, state: state }
+    );
     } finally {
-      client.release();
+      connection.close();
     }
   }
 async function accidentsPerTimeIntervals(zip_code) {
