@@ -54,6 +54,21 @@ app.get('/', function(req, res) {
 app.get('/home', function(req, res) {
     res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
+app.get('/trend_1', function(req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'trend_1.html'));
+});
+app.get('/trend_2', function(req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'trend_2.html'));
+});
+app.get('/trend_3', function(req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'trend_3.html'));
+});
+app.get('/trend_4', function(req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'trend_4.html'));
+});
+app.get('/trend_5', function(req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'trend_5.html'));
+});
 
 app.get('/severityToTimeIntervals', async (req, res) => {
   try {
