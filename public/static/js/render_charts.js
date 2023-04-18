@@ -1,3 +1,4 @@
+let currentChart = null;
 async function fetchAndRenderAccidentsChart(zipCode) {
     const response = await fetch(`/accidentsPerTimeIntervals/${zipCode}`);
     const data = await response.json();
@@ -104,6 +105,32 @@ async function fetchAndRenderAccidentsChart(zipCode) {
             }
         }
     });
+    currentChart = chart;
+    return chart;
 }
+
+async function updateAccidentsChart(zipCode) {
+    if (!currentChart) {
+        return;
+    }
+    const response = await fetch(`/accidentsPerTimeIntervals/${zipCode}`);
+    const data = await response.json();
+
+    const counts = new Array(24).fill(0);
+
+    data.forEach(d => {
+        const hour = parseInt(d[0].substring(0, 2), 10);
+        counts[hour] = d[1];
+    });
+
+    const x_vals = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5,
+        17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5];
+    const data_points = x_vals.map((k, i) => ({x: k, y: counts[i]}));
+    currentChart.data.datasets[0].data = data_points;
+    console.log(currentChart.data.datasets[0].data)
+    currentChart.options.plugins.title.text = `Number of Accidents vs Time Interval at ${zipCode}`;
+    currentChart.update();
+}
+
 
 
