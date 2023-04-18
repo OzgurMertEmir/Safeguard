@@ -62,17 +62,28 @@ async function fetchAndRenderAccidentsChart(zipCode) {
                     }
                 },
                 y: {
-                    // beginAtZero: true
+                    beginAtZero: true,
                     title: {
                         display: true,
                         text: 'Accidents',
                         font: {
                             size: 14
                         }
+                    },
+                    ticks: {
+                        callback: (value) => {
+                            if (Number.isInteger(value)) {
+                                return value;
+                            }
+                        },
                     }
                 }
             },
             plugins: {
+                title: {
+                    display: true,
+                    text: `Number of Accidents vs Time Interval at ${zipCode} `,
+                },
                 legend: {
                     display: false,
                 },
