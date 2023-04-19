@@ -93,22 +93,14 @@ async function updateQuery3(weather, state) {
     if (!currentChart3) {
         return;
     }
-    console.log("KLAJHESDKLJUIKEUGTDOIADHNJGKDSJGIOU");
-    console.log(weather)
-    console.log(state)
     const response = await fetch(`/accidentProbabilityPerDayInMornings/${weather}/${state}`);
     const data = await response.json();
 
-    console.log(data)
     const values = new Array(7).fill(0);
     for (let i = 0; i < data.length; i++){
         values[i] = data[i][1]
     }
-    console.log(currentChart3.data.datasets.data);
-    // currentChart3.data.datasets.data = values;
     currentChart3.data.datasets[0].data = values;
-    console.log(currentChart3.data.datasets.data);
-
     currentChart3.update();
 }
 
@@ -117,7 +109,6 @@ async function fetchAndRenderTrend4Chart(zipCode) {
     const response = await fetch(`/accidentsPerTimeIntervals/${zipCode}`);
     const data = await response.json();
 
-    console.log('data:', data);
 
     // Generate hourly labels for the x-axis
     const labels = [];
@@ -135,7 +126,6 @@ async function fetchAndRenderTrend4Chart(zipCode) {
         const hour = parseInt(d[0].substring(0, 2), 10);
         counts[hour] = d[1];
     });
-    console.log(counts)
     // Histogram code from: https://leimao.github.io/blog/JavaScript-ChartJS-Histogram/
     const x_vals = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5,
                              17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5]
