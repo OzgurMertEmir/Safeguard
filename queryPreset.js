@@ -223,16 +223,23 @@ async function accidentsPerTimeIntervals(zip_code) {
 }
 
 // Query 5: How does the severity of accidents change in the presence of different traffic calming methods?
-async function severityToTrafficCalming() {
-    const client = await pool.connect();
+async function severityToTrafficCalming(trafficFeature) {
+    const connection = await OracleDB.getConnection();
     try {
-      client.query(
-          'Write query here'
-      );
+        const query = "SELECT a.severity, COUNT(*) AS count " +
+            "FROM accident a " +
+            "JOIN trafficjam t ON a.id = t.id " +
+            "WHERE t." + trafficFeature + " = 'True' " +
+            "GROUP BY a.severity " +
+            "ORDER BY a.severity";
+        const result = await connection.execute(query);
+
+        return result;
     } finally {
-      client.release();
+        connection.close();
     }
-  }
+}
+
 
 module.exports = {
     severityToTimeIntervals,
