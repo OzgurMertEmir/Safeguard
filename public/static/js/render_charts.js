@@ -103,17 +103,16 @@ async function updateQuery1(state) {
 async function fetchAndRenderTrend2Chart(state) {
     const response = await fetch(`/severityToWeatherCondition/${state}`);
     const data = await response.json();
-    const labels = new Array(10);
-    const values = new Array(10);
+    console.log("Page Load");
+    console.log(data);
+    const labels = new Array(data.length).fill(0);
+    const values = new Array(data.length).fill(0);
 
-    let idx = 0;
-    const data_points = data.forEach(d => {
-        labels[idx] = d[0];
-        values[idx] = d[1];
-        idx++;
-    });
-    console.log(labels)
-    console.log("################################")
+    for (let i = 0; i < data.length; i++){
+        labels[i] = data[i][0]
+        values[i] = data[i][1]
+    }
+
     const ctx = document.getElementById('trend2Chart').getContext('2d');
     const chart = new Chart(ctx, {
         type: 'bar',
@@ -134,7 +133,7 @@ async function fetchAndRenderTrend2Chart(state) {
         options: {
             scales: {
                 x: {
-                    type: 'categorical',
+                    type: 'category',
                     offset: false,
                     grid: {
                         offset: false
@@ -184,9 +183,7 @@ async function fetchAndRenderTrend2Chart(state) {
                             }
                             const item = items[0];
                             const x = item.parsed.x;
-                            const min = x - 0.5;
-                            const max = x + 0.5;
-                            return `Hours: ${min} - ${max}`;
+                            return `${labels[x]}`;
                         }
                     }
                 }
