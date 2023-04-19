@@ -42,7 +42,7 @@ async function accidentProbabilityPerDayInMornings(weather, state) {
       const result = await connection.execute(
           `SELECT TO_CHAR(start_time, 'DAY') AS day_of_week, COUNT(*) AS Accident_Count
           FROM accident a join climate c on a.id=c.id join address ad on c.id=ad.id 
-          WHERE EXTRACT(HOUR FROM start_time) < 12 and EXTRACT(HOUR FROM start_time) >= 6 and Weather_Condition = :weather and State = :state
+          WHERE EXTRACT(HOUR FROM start_time) < 12 and Weather_Condition = :weather and State = :state
           GROUP BY TO_CHAR(start_time, 'DAY')`,
           { weather: weather, state: state }
     );
