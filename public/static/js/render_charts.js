@@ -8,8 +8,6 @@ let currentChart5 = null;
 async function fetchAndRenderTrend1Chart(state) {
     const response = await fetch(`/severityToTimeIntervals/${state}`);
     const data = await response.json();
-    console.log("Page Load");
-    console.log(data);
     const labels = new Array(24);
     const values = new Array(24);
 
@@ -105,8 +103,6 @@ async function updateQuery1(state) {
 async function fetchAndRenderTrend2Chart(state) {
     const response = await fetch(`/severityToWeatherCondition/${state}`);
     const data = await response.json();
-    console.log("Page Load");
-    console.log(data);
     const labels = new Array(10);
     const values = new Array(10);
 
@@ -116,7 +112,8 @@ async function fetchAndRenderTrend2Chart(state) {
         values[idx] = d[1];
         idx++;
     });
-
+    console.log(labels)
+    console.log("################################")
     const ctx = document.getElementById('trend2Chart').getContext('2d');
     const chart = new Chart(ctx, {
         type: 'bar',
@@ -137,7 +134,7 @@ async function fetchAndRenderTrend2Chart(state) {
         options: {
             scales: {
                 x: {
-                    type: 'linear',
+                    type: 'categorical',
                     offset: false,
                     grid: {
                         offset: false
@@ -213,15 +210,15 @@ async function updateQuery2(state) {
 }
 
 async function fetchAndRenderTrend3Chart(weather, state) {
-    const response = await fetch(`/accidentProbabilityPerDayInMornings/${weather}/${state}`);
+    const encodedWeather = encodeURIComponent(weather);
+    const response = await fetch(`/accidentProbabilityPerDayInMornings/${encodedWeather}/${state}`);
     const data = await response.json();
     const labels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     const values = new Array(7).fill(0);
     for (let i = 0; i < data.length; i++){
         values[i] = data[i][1]
     }
-    const maxValue = Math.max(...values);
-    const padding = maxValue * 1.10;
+
     const ctx = document.getElementById('trend3Chart').getContext('2d');
     const chart = new Chart(ctx, {
         type: 'bar',
@@ -270,6 +267,9 @@ async function fetchAndRenderTrend3Chart(weather, state) {
                                 return value;
                             }
                         },
+                    },
+                    grid: {
+                        display: false
                     }
                 }
             },
@@ -302,7 +302,8 @@ async function updateQuery3(weather, state) {
     if (!currentChart3) {
         return;
     }
-    const response = await fetch(`/accidentProbabilityPerDayInMornings/${weather}/${state}`);
+    const encodedWeather = encodeURIComponent(weather);
+    const response = await fetch(`/accidentProbabilityPerDayInMornings/${encodedWeather}/${state}`);
     const data = await response.json();
 
     const values = new Array(7).fill(0);
@@ -362,7 +363,7 @@ async function fetchAndRenderTrend4Chart(zipCode) {
                     type: 'linear',
                     offset: false,
                     grid: {
-                        offset: false
+                        display: false
                     },
                     ticks: {
                         stepSize: 1
@@ -390,6 +391,9 @@ async function fetchAndRenderTrend4Chart(zipCode) {
                                 return value;
                             }
                         },
+                    },
+                    grid: {
+                        display: false
                     }
                 }
             },
