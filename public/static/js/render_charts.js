@@ -87,7 +87,7 @@ async function fetchAndRenderTrend1Chart(state) {
     return chart;
 }
 
-async function updateQuery1(state) {
+async function updateTrend1Chart(state) {
 
     if (!currentChart1) {
         return;
@@ -194,15 +194,19 @@ async function fetchAndRenderTrend2Chart(state) {
     return chart;
 }
 
-async function updateQuery2(state) {
+async function updateTrend2Chart(state) {
 
     if (!currentChart2) {
         return;
     }
     const response = await fetch(`/severityToWeatherCondition/${state}`);
     const data = await response.json();
+    const values = new Array(data.length).fill(0);
 
-    currentChart2.data.datasets[0].data = data;
+    for (let i = 0; i < data.length; i++){
+        values[i] = data[i][1]
+    }
+    currentChart2.data.datasets[0].data = values;
     currentChart2.update();
 }
 
@@ -294,7 +298,7 @@ async function fetchAndRenderTrend3Chart(weather, state) {
     return chart;
 }
 
-async function updateQuery3(weather, state) {
+async function updateTrend3Chart(weather, state) {
 
     if (!currentChart3) {
         return;
