@@ -91,10 +91,11 @@ app.get('/severityToWeatherCondition', async (req, res) => {
     }
   });
 
-  app.get('/accidentProbabilityPerDayInMornings', async (req, res) => {
+  app.get('/accidentProbabilityPerDayInMornings/:weather/:state', async (req, res) => {
     try {
-      const result = await queryPreset.accidentProbabilityPerDayInMornings("Cloudy", "FL");
-      console.log(result);
+      const weather = req.params.weather;
+      const state = req.params.state;
+      const result = await queryPreset.accidentProbabilityPerDayInMornings(weather, state);
       res.status(200).json(result.rows);
     } catch (err) {
       console.error(err);

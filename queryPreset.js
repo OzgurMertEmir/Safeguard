@@ -191,10 +191,12 @@ async function accidentProbabilityPerDayInMornings(weather, state) {
           GROUP BY TO_CHAR(start_time, 'DAY')`,
           { weather: weather, state: state }
     );
+    return result;
     } finally {
       connection.close();
     }
   }
+
 async function accidentsPerTimeIntervals(zip_code) {
     const connection = await OracleDB.getConnection();
     try {
