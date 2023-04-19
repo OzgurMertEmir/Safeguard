@@ -70,9 +70,10 @@ app.get('/trend_5', function(req, res) {
     res.sendFile(path.join(__dirname, 'public', 'trend_5.html'));
 });
 
-app.get('/severityToTimeIntervals', async (req, res) => {
+app.get('/severityToTimeIntervals/:state', async (req, res) => {
   try {
-    const result = await queryPreset.severityToTimeIntervals();
+    const state = req.params.state;
+    const result = await queryPreset.severityToTimeIntervals(state);
     res.status(200).json(result.rows);
   } catch (err) {
     console.error(err);
@@ -80,10 +81,10 @@ app.get('/severityToTimeIntervals', async (req, res) => {
   }
 });
 
-app.get('/severityToWeatherCondition', async (req, res) => {
+app.get('/severityToWeatherCondition/:state', async (req, res) => {
     try {
-      const result = await queryPreset.severityToWeatherCondition();
-      console.log(result);
+      const state = req.params.state;
+      const result = await queryPreset.severityToWeatherCondition(state);
       res.status(200).json(result.rows);
     } catch (err) {
       console.error(err);
