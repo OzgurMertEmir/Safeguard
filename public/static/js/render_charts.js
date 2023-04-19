@@ -1,7 +1,216 @@
+let currentChart1 = null;
+let currentChart2 = null;
 let currentChart3 = null;
 let currentChart4 = null;
 let currentChart5 = null;
 
+
+async function fetchAndRenderTrend1Chart(state) {
+    const response = await fetch(`/severityToTimeIntervals/${state}`);
+    const data = await response.json();
+    console.log("Page Load");
+    console.log(data);
+    const labels = new Array(24);
+    const values = new Array(24);
+
+    let idx = 0;
+    let min = Number.MAX_SAFE_INTEGER;
+    let max = Number.MIN_SAFE_INTEGER;
+    const data_points = data.forEach(d => {
+        labels[idx] = d[0];
+        values[idx] = d[1];
+        min = Math.min(min, d[1]);
+        max = Math.max(max, d[1]);
+        idx++;
+    });
+
+    const ctx = document.getElementById('trend1Chart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Average Severity',
+                    data: values,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    barPercentage: 1,
+                    categoryPercentage: 1,
+                },
+            ],
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',
+                    offset: false,
+                    grid: {
+                        offset: false
+                    },
+                    ticks: {
+                        stepSize: 1
+                    },
+                    title: {
+                        display: true,
+                        text: 'Hour',
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                y: {
+                    beginAtZero: false,
+                    title: {
+                        display: true,
+                        text: 'Average Severity of Accidents',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    ticks: {
+                        stepSize: (max-min)/10
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: `Severity of Accidents vs Time of the Day at ${state}`,
+                },
+                legend: {
+                    display: false,
+                },
+            }
+        }
+    });
+    currentChart1 = chart;
+    return chart;
+}
+
+async function updateQuery1(state) {
+
+    if (!currentChart1) {
+        return;
+    }
+    const response = await fetch(`/severityToTimeIntervals/${state}`);
+    const data = await response.json();
+
+    currentChart1.data.datasets[0].data = data;
+    currentChart1.update();
+}
+
+
+async function fetchAndRenderTrend2Chart(state) {
+    const response = await fetch(`/severityToWeatherCondition/${state}`);
+    const data = await response.json();
+    console.log("Page Load");
+    console.log(data);
+    const labels = new Array(10);
+    const values = new Array(10);
+
+    let idx = 0;
+    const data_points = data.forEach(d => {
+        labels[idx] = d[0];
+        values[idx] = d[1];
+        idx++;
+    });
+
+    const ctx = document.getElementById('trend2Chart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Average Severity',
+                    data: values,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    barPercentage: 1,
+                    categoryPercentage: 1,
+                },
+            ],
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',
+                    offset: false,
+                    grid: {
+                        offset: false
+                    },
+                    ticks: {
+                        stepSize: 1
+                    },
+                    title: {
+                        display: true,
+                        text: 'Weather Condition',
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Average Severity of Accidents',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    ticks: {
+                        callback: (value) => {
+                            if (Number.isInteger(value)) {
+                                return value;
+                            }
+                        },
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: `Severity of Accidents vs Weather Conditions at ${state}`,
+                },
+                legend: {
+                    display: false,
+                },
+                tooltip: {
+                    callbacks: {
+                        title: (items) => {
+                            if (!items.length) {
+                                return '';
+                            }
+                            const item = items[0];
+                            const x = item.parsed.x;
+                            const min = x - 0.5;
+                            const max = x + 0.5;
+                            return `Hours: ${min} - ${max}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+    currentChart2 = chart;
+    return chart;
+}
+
+async function updateQuery2(state) {
+
+    if (!currentChart2) {
+        return;
+    }
+    const response = await fetch(`/severityToWeatherCondition/${state}`);
+    const data = await response.json();
+
+    currentChart2.data.datasets[0].data = data;
+    currentChart2.update();
+}
 
 async function fetchAndRenderTrend3Chart(weather, state) {
     const response = await fetch(`/accidentProbabilityPerDayInMornings/${weather}/${state}`);
