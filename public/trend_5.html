@@ -86,7 +86,10 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="graph">
-                        <select id="trafficFeatures" multiple>
+                        <canvas id="severityChart"></canvas>
+                    </div>
+                    <div>
+                        <select id="trafficFeatures">
                             <option value="TRAFFIC_SIGNAL">Traffic Signal</option>
                             <option value="TRAFFIC_CALMING">Traffic Calming</option>
                             <option value="GIVEWAY">Give Way</option>
@@ -102,10 +105,6 @@
                             <option value="TURNING_LOOP">Turning Loop</option>
                         </select>
                         <button onclick="updateTrend5Chart(getSelectedTrafficFeature())">Update Chart</button>
-                        <canvas id="severityChart"></canvas>
-
-
-
                     </div>
                 </div>
             </div>
