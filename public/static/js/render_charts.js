@@ -4,6 +4,7 @@ let currentChart3 = null;
 let currentChart4 = null;
 let currentChart5 = null;
 
+let bubbleDiv1 = null; 
 
 async function fetchAndRenderTrend1Chart(state) {
     const response = await fetch(`/severityToTimeIntervals/${state}`);
@@ -17,6 +18,12 @@ async function fetchAndRenderTrend1Chart(state) {
         values[idx] = d[1];
         idx++;
     });
+
+    
+    bubbleDiv1 = document.getElementById("bubble1");
+    bubbleDiv1.textContent = await generateBubbleText1(values, state);
+
+
 
     const ctx = document.getElementById('trend1Chart').getContext('2d');
     const chart = new Chart(ctx, {
@@ -55,7 +62,7 @@ async function fetchAndRenderTrend1Chart(state) {
                     }
                 },
                 y: {
-                    beginAtZero: false,
+                    beginAtZero: true,
                     title: {
                         display: true,
                         text: 'Average Severity of Accidents',
