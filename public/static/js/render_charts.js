@@ -12,13 +12,9 @@ async function fetchAndRenderTrend1Chart(state) {
     const values = [];
 
     let idx = 0;
-    let min = Number.MAX_SAFE_INTEGER;
-    let max = Number.MIN_SAFE_INTEGER;
     const data_points = data.forEach(d => {
         labels[idx] = d[0];
         values[idx] = d[1];
-        min = Math.min(min, d[1]);
-        max = Math.max(max, d[1]);
         idx++;
     });
 
@@ -68,7 +64,7 @@ async function fetchAndRenderTrend1Chart(state) {
                         }
                     },
                     ticks: {
-                        stepSize: (max-min)/10
+                        stepSize: 0.00125
                     }
                 }
             },
@@ -94,8 +90,20 @@ async function updateTrend1Chart(state) {
     }
     const response = await fetch(`/severityToTimeIntervals/${state}`);
     const data = await response.json();
+    
+    const labels = [];
+    const values = [];
 
-    currentChart1.data.datasets[0].data = data;
+    let idx = 0;
+    const data_points = data.forEach(d => {
+        labels[idx] = d[0];
+        values[idx] = d[1];
+        idx++;
+    });
+
+
+    currentChart1.data.datasets[0].data = values;
+    currentChart1.data.labels = labels;
     currentChart1.options.plugins.title.text = `Severity of Accidents vs Time of the Day at ${state}`;
     currentChart1.update();
 }
