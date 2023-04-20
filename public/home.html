@@ -1,109 +1,159 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <!--    bootstrap.load_css()-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Bootstrap CSS -->
+  <!--    bootstrap.load_css()-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <title>Statistical Presentation</title>
+  <title>Trend 1</title>
 
 </head>
 <body>
 <div class="sidenav">
-<!--    <img src="../static/logo.png" alt=Shield logo with text SafeGuard0">-->
-    <img src="static/logo.png" alt="Shield logo with text SafeGuard">
+  <!--    <img src="../static/logo.png" alt=Shield logo with text SafeGuard0">-->
+  <img src="static/logo.png" alt="Shield logo with text SafeGuard">
 
-    <p class="dashboard">
-        T R E N D S
-    </p>
-    <a href="/trend_1">
-        Accident Severity vs Time Interval
-    </a>
-    <a href="/trend_2">
-        Accident Severity vs Weather
-    </a>
-    <a href="/trend_3">
-        Accident Probability vs Weather, Day, and State
-    </a>
-    <a href="/trend_4">
-        Number of Accidents vs Time Interval and Zip Code
-    </a>
-    <a href="/trend_5">
-        Accident Severity vs Different Traffic Calming Methods
-    </a>
+  <p class="dashboard">
+    T R E N D S
+  </p>
+  <a href="/trend_1">
+    Accident Severity vs Time Interval
+  </a>
+  <a href="/trend_2">
+    Accident Severity vs Weather
+  </a>
+  <a href="/trend_3">
+    Accident Probability vs Weather, Day, and State
+  </a>
+  <a href="/trend_4">
+    Number of Accidents vs Time Interval and Zip Code
+  </a>
+  <a href="/trend_5">
+    Accident Severity vs Different Traffic Calming Methods
+  </a>
 
 </div>
 
 <div class="main-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="ad">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ad">
 
-                    <p> With Safeguard+ unlock premium stats for just $29.99/month!</p>
-                </div>
-            </div>
+          <p> With Safeguard+ unlock premium stats for just $29.99/month!</p>
         </div>
-        <!--todo adjust sizes of boxes-->
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card_stats">
-                    <div class="card-body">
-                        Row 2 - Block 1
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card_stats">
-                    <div class="card-body">
-                        Row 2 - Block 2
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card_stats">
-                    <div class="card-body">
-                        Row 2 - Block 3
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card_stats">
-                    <div class="card-body">
-                        Row 2 - Block 4
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="graph">
-                        <canvas id="accidentsChart"></canvas>
-                        <label for="zipcode">Enter Zip Code:</label>
-                        <input type="text" id="zipcode" name="zipcode">
-                        <button onclick="updateTrend4Chart(document.getElementById('zipcode').value)">Update</button>
-
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <!--todo adjust sizes of boxes-->
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card_stats">
+          <div class="card-body">
+            Row 2 - Block 1
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card_stats">
+          <div class="card-body">
+            Row 2 - Block 2
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card_stats">
+          <div class="card-body">
+            Row 2 - Block 3
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card_stats">
+          <div class="card-body">
+            Row 2 - Block 4
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="graph">
+            <canvas id="trend1Chart"></canvas>
+          </div>
+          </div>
+            <label for="select-state">Choose state:</label>
+            <select for="state" id="state">
+                <option value="AL">AL</option>
+                <option value="AR">AR</option>
+                <option value="AZ">AZ</option>
+                <option value="CA">CA</option>
+                <option value="CO">CO</option>
+                <option value="CT">CT</option>
+                <option value="DC">DC</option>
+                <option value="DE">DE</option>
+                <option value="FL">FL</option>
+                <option value="GA">GA</option>
+                <option value="IA">IA</option>
+                <option value="ID">ID</option>
+                <option value="IL">IL</option>
+                <option value="IN">IN</option>
+                <option value="KS">KS</option>
+                <option value="KY">KY</option>
+                <option value="LA">LA</option>
+                <option value="MA">MA</option>
+                <option value="MD">MD</option>
+                <option value="ME">ME</option>
+                <option value="MI">MI</option>
+                <option value="MN">MN</option>
+                <option value="MO">MO</option>
+                <option value="MS">MS</option>
+                <option value="MT">MT</option>
+                <option value="NC">NC</option>
+                <option value="ND">ND</option>
+                <option value="NE">NE</option>
+                <option value="NH">NH</option>
+                <option value="NJ">NJ</option>
+                <option value="NM">NM</option>
+                <option value="NV">NV</option>
+                <option value="NY">NY</option>
+                <option value="OH">OH</option>
+                <option value="OK">OK</option>
+                <option value="OR">OR</option>
+                <option value="PA">PA</option>
+                <option value="RI">RI</option>
+                <option value="SC">SC</option>
+                <option value="SD">SD</option>
+                <option value="TN">TN</option>
+                <option value="TX">TX</option>
+                <option value="UT">UT</option>
+                <option value="VA">VA</option>
+                <option value="VT">VT</option>
+                <option value="WA">WA</option>
+                <option value="WI">WI</option>
+                <option value="WV">WV</option>
+                <option value="WY">WY</option>
+              </select>                      
+            <button onclick="updateTrend1Chart(document.getElementById('state').value)">Update</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!--    bootstrap.load_js()-->
 <script src="static/js/render_charts.js"></script>
-<script>fetchAndRenderTrend4Chart("33126")</script>
+<script>fetchAndRenderTrend1Chart("FL")</script>
 </body>
 </html>

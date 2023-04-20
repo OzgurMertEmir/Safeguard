@@ -48,12 +48,15 @@ app.post("/auth/login", async (req, res) => {
   });
 
 app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+    res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
 
+/*
 app.get('/home', function(req, res) {
     res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
+*/
+
 app.get('/trend_1', function(req, res) {
     res.sendFile(path.join(__dirname, 'public', 'trend_1.html'));
 });

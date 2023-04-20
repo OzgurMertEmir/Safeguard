@@ -8,8 +8,8 @@ let currentChart5 = null;
 async function fetchAndRenderTrend1Chart(state) {
     const response = await fetch(`/severityToTimeIntervals/${state}`);
     const data = await response.json();
-    const labels = new Array(24);
-    const values = new Array(24);
+    const labels = [];
+    const values = [];
 
     let idx = 0;
     let min = Number.MAX_SAFE_INTEGER;
@@ -96,6 +96,7 @@ async function updateTrend1Chart(state) {
     const data = await response.json();
 
     currentChart1.data.datasets[0].data = data;
+    currentChart1.options.plugins.title.text = `Severity of Accidents vs Time of the Day at ${state}`;
     currentChart1.update();
 }
 
@@ -103,8 +104,7 @@ async function updateTrend1Chart(state) {
 async function fetchAndRenderTrend2Chart(state) {
     const response = await fetch(`/severityToWeatherCondition/${state}`);
     const data = await response.json();
-    console.log("Page Load");
-    console.log(data);
+
     const labels = new Array(data.length).fill(0);
     const values = new Array(data.length).fill(0);
 
@@ -207,6 +207,7 @@ async function updateTrend2Chart(state) {
         values[i] = data[i][1]
     }
     currentChart2.data.datasets[0].data = values;
+    currentChart2.options.plugins.title.text = `Severity of Accidents vs Weather Conditions at ${state}`;
     currentChart2.update();
 }
 
@@ -312,6 +313,7 @@ async function updateTrend3Chart(weather, state) {
         values[i] = data[i][1]
     }
     currentChart3.data.datasets[0].data = values;
+    currentChart3.options.plugins.title.text = `Number of Accidents vs Morning of the Week at ${state}, Weather Condition: ${weather}`;
     currentChart3.update();
 }
 
