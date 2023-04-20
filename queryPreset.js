@@ -102,36 +102,15 @@ async function severityToTrafficCalming(trafficFeature, severityFilter) {
             "AND a.severity IN (" + severityFilter + ") " +
             "GROUP BY a.severity " +
             "ORDER BY a.severity";
-    // const query =
-    //   SELECT a.severity, COUNT(*) AS Accident_Count
-    //   FROM accident a
-    //   JOIN climate c ON a.id=c.id
-    //   JOIN address ad ON c.id=ad.id
-    //   WHERE Weather_Condition = traffic
-    //   AND a.severity IN (` + severityFilter.join(", ") + `)
-    //   GROUP BY a.severity
-    //   ORDER BY a.severity";
-    //     const result = await connection.execute(query, {trafficFeature: trafficFeature});
-        const result = await connection.execute(query);
-        // const result = await connection.execute(query, { weather: weather, state: state });
 
-        console.log(result)
+        const result = await connection.execute(query);
+
         return result;
     } finally {
         connection.close();
     }
 }
 
-// const query = `
-//       SELECT a.severity, COUNT(*) AS Accident_Count
-//       FROM accident a
-//       JOIN climate c ON a.id=c.id
-//       JOIN address ad ON c.id=ad.id
-//       WHERE Weather_Condition = :weather AND State = :state
-//       AND a.severity IN (` + severityFilter.join(", ") + `)
-//       GROUP BY a.severity
-//       ORDER BY a.severity
-//     `;
 
 module.exports = {
     severityToTimeIntervals,
