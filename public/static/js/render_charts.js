@@ -7,21 +7,14 @@ let currentChart5 = null;
 async function fetchAndRenderTrend1Chart(state) {
     const response = await fetch(`/severityToTimeIntervals/${state}`);
     const data = await response.json();
-    const labels = [];
     const values = [];
-
+    const labels = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5,
+        17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5];
     let idx = 0;
     const data_points = data.forEach(d => {
-        labels[idx] = d[0];
         values[idx] = d[1];
         idx++;
     });
-
-    
-    // bubbleDiv1 = document.getElementById("bubble1");
-    // bubbleDiv1.textContent = await generateBubbleText1(values, state);
-
-
 
     const ctx = document.getElementById('trend1Chart').getContext('2d');
     const chart = new Chart(ctx, {
@@ -46,14 +39,14 @@ async function fetchAndRenderTrend1Chart(state) {
                     type: 'linear',
                     offset: false,
                     grid: {
-                        offset: false
+                        display: false
                     },
                     ticks: {
                         stepSize: 1
                     },
                     title: {
                         display: true,
-                        text: 'Hour',
+                        text: 'Hours',
                         font: {
                             size: 14
                         }
@@ -63,24 +56,49 @@ async function fetchAndRenderTrend1Chart(state) {
                     beginAtZero: false,
                     title: {
                         display: true,
-                        text: 'Average Severity of Accidents',
+                        text: 'Accidents',
                         font: {
-                            size: 14
+                            size: 16
                         }
                     },
                     ticks: {
-                        stepSize: 0.00125
-                    }
+                        callback: (value) => {
+                            if (Number.isInteger(value)) {
+                                return value;
+                            }
+                        },
+                    },
+                    grid: {
+                        display: false
+                    },
+                    min: 1
                 }
             },
             plugins: {
                 title: {
                     display: true,
-                    text: `Severity of Accidents vs Time of the Day at ${state}`,
+                    text: `Number of Accidents vs Time Interval at ${state}`,
+                    font: {
+                        size: 28
+                    }
                 },
                 legend: {
                     display: false,
                 },
+                tooltip: {
+                    callbacks: {
+                        title: (items) => {
+                            if (!items.length) {
+                                return '';
+                            }
+                            const item = items[0];
+                            const x = item.parsed.x;
+                            const min = x - 0.5;
+                            const max = x + 0.5;
+                            return `Hours: ${min} - ${max}`;
+                        }
+                    }
+                }
             }
         }
     });
@@ -95,13 +113,13 @@ async function updateTrend1Chart(state) {
     }
     const response = await fetch(`/severityToTimeIntervals/${state}`);
     const data = await response.json();
-    
-    const labels = [];
+
+    const labels = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5,
+        17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5];
     const values = [];
 
     let idx = 0;
     const data_points = data.forEach(d => {
-        labels[idx] = d[0];
         values[idx] = d[1];
         idx++;
     });
@@ -171,7 +189,7 @@ async function fetchAndRenderTrend2Chart(weather, state, severityFilter) {
                         display: true,
                         text: 'Number of Accidents',
                         font: {
-                            size: 14
+                            size: 16
                         }
                     },
                     ticks: {
@@ -187,6 +205,9 @@ async function fetchAndRenderTrend2Chart(weather, state, severityFilter) {
                 title: {
                     display: true,
                     text: `Severity of Accidents vs Weather Conditions at ${state}, Weather Condition: ${weather}`,
+                    font: {
+                        size: 20
+                    }
                 },
                 legend: {
                     display: false,
@@ -280,7 +301,7 @@ async function fetchAndRenderTrend3Chart(weather, state) {
                         display: true,
                         text: 'Accidents',
                         font: {
-                            size: 14
+                            size: 16
                         }
                     },
                     ticks: {
@@ -299,6 +320,9 @@ async function fetchAndRenderTrend3Chart(weather, state) {
                 title: {
                     display: true,
                     text: `Number of Accidents vs Morning of the Week at ${state}, Weather Condition: ${weather}`,
+                    font: {
+                        size: 20
+                    }
                 },
                 legend: {
                     display: false,
@@ -405,7 +429,7 @@ async function fetchAndRenderTrend4Chart(zipCode) {
                         display: true,
                         text: 'Accidents',
                         font: {
-                            size: 14
+                            size: 16
                         }
                     },
                     ticks: {
@@ -424,6 +448,9 @@ async function fetchAndRenderTrend4Chart(zipCode) {
                 title: {
                     display: true,
                     text: `Number of Accidents vs Time Interval at ${zipCode} `,
+                    font: {
+                        size: 28
+                    }
                 },
                 legend: {
                     display: false,
@@ -472,20 +499,25 @@ async function updateTrend4Chart(zipCode) {
 }
 
 
-async function fetchAndRenderTrend5Chart(trafficFeature){
+async function fetchAndRenderTrend5Chart(trafficFeature,severityFilter){
 
-    const response = await fetch(`/severityToTrafficCalming/${trafficFeature}`);
+    const response = await fetch(`/severityToTrafficCalming/${trafficFeature}/${severityFilter}`);
     const data = await response.json();
 
+    const labels = ['1', '2', '3', '4']
+    const values = new Array(4).fill(0);
+    for (let i = 0; i < data.length; i++){
+        values[data[i][0]-1] = data[i][1]
+    }
     const ctx = document.getElementById('severityChart').getContext('2d');
     const chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['1', '2', '3', '4'],
+            labels: labels,
             datasets: [
                 {
                     label: 'Severity Count',
-                    data: data,
+                    data: values,
                     backgroundColor: 'rgba(75, 192, 192, 0.5)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1,
@@ -500,6 +532,9 @@ async function fetchAndRenderTrend5Chart(trafficFeature){
                 title: {
                     display: true,
                     text: `Severity of accidents in presence of ${trafficFeature}`,
+                    font: {
+                        size: 28
+                    }
 
                 },
             },
@@ -517,7 +552,10 @@ async function fetchAndRenderTrend5Chart(trafficFeature){
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Count',
+                        text: 'Accidents',
+                        font: {
+                            size: 16
+                        }
                     },
                     grid: {
                         display: false,
@@ -531,16 +569,21 @@ async function fetchAndRenderTrend5Chart(trafficFeature){
 }
 
 
-async function updateTrend5Chart(trafficFeature) {
+async function updateTrend5Chart(trafficFeature, severityFilter) {
 
 
     if (!currentChart5) {
         return;
     }
-    const response = await fetch(`/severityToTrafficCalming/${trafficFeature}`);
+    const response = await fetch(`/severityToTrafficCalming/${trafficFeature}/${severityFilter}`);
     const data = await response.json();
 
-    currentChart5.data.datasets[0].data = data;
+    const labels = ['1', '2', '3', '4']
+    const values = new Array(4).fill(0);
+    for (let i = 0; i < data.length; i++){
+        values[data[i][0]-1] = data[i][1]
+    }
+    currentChart5.data.datasets[0].data = values;
     currentChart5.options.plugins.title.text = `Severity of accidents in presence of ${trafficFeature}`;
     currentChart5.update();
 }

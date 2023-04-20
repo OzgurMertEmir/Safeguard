@@ -121,10 +121,11 @@ app.get('/severityToWeatherCondition/:weather/:state/:severityFilter', async (re
     }
   });
 
-  app.get('/severityToTrafficCalming/:trafficFeature', async (req, res) => {
+  app.get('/severityToTrafficCalming/:trafficFeature/:severityFilter', async (req, res) => {
     try {
       const trafficFeature = req.params.trafficFeature;
-      const result = await queryPreset.severityToTrafficCalming(trafficFeature);
+      const severityFilter = req.params.severityFilter;
+      const result = await queryPreset.severityToTrafficCalming(trafficFeature, severityFilter);
       res.status(200).json(result.rows);
     } catch (err) {
       console.error(err);
