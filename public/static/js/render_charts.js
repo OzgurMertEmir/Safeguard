@@ -150,7 +150,7 @@ async function fetchAndRenderTrend2Chart(weather, state, severityFilter) {
             labels: labels,
             datasets: [
                 {
-                    label: 'Average Severity',
+                    label: 'Number of Accidents',
                     data: values,
                     backgroundColor: 'rgba(75, 192, 192, 0.5)',
                     borderColor: 'rgba(75, 192, 192, 1)',
@@ -220,7 +220,7 @@ async function fetchAndRenderTrend2Chart(weather, state, severityFilter) {
                             }
                             const item = items[0];
                             const x = item.parsed.x;
-                            return `${labels[x]}`;
+                            return `Severity: ${labels[x]}`;
                         }
                     }
                 }
@@ -516,7 +516,7 @@ async function fetchAndRenderTrend5Chart(trafficFeature,severityFilter){
             labels: labels,
             datasets: [
                 {
-                    label: 'Severity Count',
+                    label: 'Accident Count',
                     data: values,
                     backgroundColor: 'rgba(75, 192, 192, 0.5)',
                     borderColor: 'rgba(75, 192, 192, 1)',
