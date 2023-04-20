@@ -84,10 +84,12 @@ app.get('/severityToTimeIntervals/:state', async (req, res) => {
   }
 });
 
-app.get('/severityToWeatherCondition/:state', async (req, res) => {
+app.get('/severityToWeatherCondition/:weather/:state/:severityFilter', async (req, res) => {
     try {
       const state = req.params.state;
-      const result = await queryPreset.severityToWeatherCondition(state);
+      const weather = decodeURIComponent(req.params.weather);
+      const severityFilter = req.params.severityFilter;
+      const result = await queryPreset.severityToWeatherCondition(weather, state, severityFilter);
       res.status(200).json(result.rows);
     } catch (err) {
       console.error(err);
