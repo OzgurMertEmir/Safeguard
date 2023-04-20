@@ -121,13 +121,12 @@ async function fetchAndRenderTrend2Chart(weather, state, severityFilter) {
     const response = await fetch(`/severityToWeatherCondition/${encodedWeather}/${state}/${severityFilter}`);
     const data = await response.json();
 
-    const labels = new Array(data.length).fill(0);
-    const values = new Array(data.length).fill(0);
-
+    const labels = ['1', '2', '3', '4']
+    const values = new Array(4).fill(0);
     for (let i = 0; i < data.length; i++){
-        labels[i] = data[i][0]
-        values[i] = data[i][1]
+        values[data[i][0]-1] = data[i][1]
     }
+
     const ctx = document.getElementById('trend2Chart').getContext('2d');
     const chart = new Chart(ctx, {
         type: 'bar',
@@ -222,11 +221,9 @@ async function updateTrend2Chart(weather, state, severityFilter) {
     const response = await fetch(`/severityToWeatherCondition/${encodedWeather}/${state}/${severityFilter}`);
     const data = await response.json();
 
-    // const labels = new Array(data.length).fill(0);
     const labels = ['1', '2', '3', '4']
     const values = new Array(4).fill(0);
     for (let i = 0; i < data.length; i++){
-        // labels[data[i][0]] = data[i][0]
         values[data[i][0]-1] = data[i][1]
     }
     currentChart2.data.datasets[0].data = values;
