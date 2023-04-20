@@ -20,8 +20,8 @@ async function fetchAndRenderTrend1Chart(state) {
     });
 
     
-    bubbleDiv1 = document.getElementById("bubble1");
-    bubbleDiv1.textContent = await generateBubbleText1(values, state);
+    // bubbleDiv1 = document.getElementById("bubble1");
+    // bubbleDiv1.textContent = await generateBubbleText1(values, state);
 
 
 
