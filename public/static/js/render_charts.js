@@ -116,8 +116,9 @@ async function updateTrend1Chart(state) {
 }
 
 
-async function fetchAndRenderTrend2Chart(state) {
-    const response = await fetch(`/severityToWeatherCondition/${state}`);
+async function fetchAndRenderTrend2Chart(weather, state, severityFilter) {
+    const encodedWeather = encodeURIComponent(weather);
+    const response = await fetch(`/severityToWeatherCondition/${encodedWeather}/${state}/${severityFilter}`);
     const data = await response.json();
 
     const labels = new Array(data.length).fill(0);
@@ -127,7 +128,6 @@ async function fetchAndRenderTrend2Chart(state) {
         labels[i] = data[i][0]
         values[i] = data[i][1]
     }
-
     const ctx = document.getElementById('trend2Chart').getContext('2d');
     const chart = new Chart(ctx, {
         type: 'bar',
@@ -140,7 +140,7 @@ async function fetchAndRenderTrend2Chart(state) {
                     backgroundColor: 'rgba(75, 192, 192, 0.5)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1,
-                    barPercentage: 1,
+                    barPercentage: 0.65,
                     categoryPercentage: 1,
                 },
             ],
@@ -149,16 +149,17 @@ async function fetchAndRenderTrend2Chart(state) {
             scales: {
                 x: {
                     type: 'category',
-                    offset: false,
+                    offset: true,
+
                     grid: {
-                        offset: false
+                        display: false
                     },
                     ticks: {
                         stepSize: 1
                     },
                     title: {
                         display: true,
-                        text: 'Weather Condition',
+                        text: 'Severity',
                         font: {
                             size: 14
                         }
@@ -166,9 +167,12 @@ async function fetchAndRenderTrend2Chart(state) {
                 },
                 y: {
                     beginAtZero: true,
+                    grid: {
+                        display: false,
+                    },
                     title: {
                         display: true,
-                        text: 'Average Severity of Accidents',
+                        text: 'Number of Accidents',
                         font: {
                             size: 14
                         }
@@ -185,7 +189,7 @@ async function fetchAndRenderTrend2Chart(state) {
             plugins: {
                 title: {
                     display: true,
-                    text: `Severity of Accidents vs Weather Conditions at ${state}`,
+                    text: `Severity of Accidents vs Weather Conditions at ${state}, Weather Condition: ${weather}`,
                 },
                 legend: {
                     display: false,
@@ -209,21 +213,27 @@ async function fetchAndRenderTrend2Chart(state) {
     return chart;
 }
 
-async function updateTrend2Chart(state) {
+async function updateTrend2Chart(weather, state, severityFilter) {
 
     if (!currentChart2) {
         return;
     }
-    const response = await fetch(`/severityToWeatherCondition/${state}`);
+    const encodedWeather = encodeURIComponent(weather);
+    const response = await fetch(`/severityToWeatherCondition/${encodedWeather}/${state}/${severityFilter}`);
     const data = await response.json();
-    const values = new Array(data.length).fill(0);
 
+    // const labels = new Array(data.length).fill(0);
+    const labels = ['1', '2', '3', '4']
+    const values = new Array(4).fill(0);
     for (let i = 0; i < data.length; i++){
-        values[i] = data[i][1]
+        // labels[data[i][0]] = data[i][0]
+        values[data[i][0]-1] = data[i][1]
     }
     currentChart2.data.datasets[0].data = values;
-    currentChart2.options.plugins.title.text = `Severity of Accidents vs Weather Conditions at ${state}`;
+    currentChart2.data.labels = labels;
+    currentChart2.options.plugins.title.text = `Severity of Accidents vs Weather Conditions at ${state}, Weather Condition: ${weather}`;
     currentChart2.update();
+
 }
 
 async function fetchAndRenderTrend3Chart(weather, state) {

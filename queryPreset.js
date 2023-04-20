@@ -17,23 +17,30 @@ async function severityToTimeIntervals(state) {
     }
 }
 
-async function severityToWeatherCondition(state) {
+async function severityToWeatherCondition(weather, state, severityFilter) {
+    if (typeof severityFilter === 'string') {
+        severityFilter = severityFilter.split(',').map(Number);
+    }
+
     const connection = await OracleDB.getConnection();
-    console.log(state);
     try {
-        const result = await connection.execute(
-            `SELECT Weather_Condition, AVG(Severity)
-            FROM accident a JOIN address ad ON a.id=ad.id JOIN climate c ON ad.id=c.id
-            WHERE state = :state
-            GROUP BY Weather_Condition 
-            ORDER BY AVG(Severity) DESC
-            FETCH FIRST 10 ROWS ONLY` , {state: state}
-        );
+        const query = `
+      SELECT a.severity, COUNT(*) AS Accident_Count
+      FROM accident a
+      JOIN climate c ON a.id=c.id
+      JOIN address ad ON c.id=ad.id
+      WHERE Weather_Condition = :weather AND State = :state
+      AND a.severity IN (` + severityFilter.join(", ") + `)
+      GROUP BY a.severity
+      ORDER BY a.severity
+    `;
+        const result = await connection.execute(query, { weather: weather, state: state });
         return result;
     } finally {
         connection.close();
     }
 }
+
 
 // Query 3: Which day of the week is the highest accident probability in the morning with different weather conditions for different states?
 async function accidentProbabilityPerDayInMornings(weather, state) {
