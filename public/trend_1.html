@@ -12,7 +12,9 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <title>Trend 1</title>
-
+  <script src="static/js/render_bubbles.js"></script>
+  <script src="static/js/render_charts.js"></script>
+  <script>fetchAndRenderTrend1Chart("FL")</script>
 </head>
 <body>
 <div class="sidenav">
@@ -55,7 +57,8 @@
       <div class="col-md-3">
         <div class="card_stats">
           <div class="card-body">
-            <div id="bubble1"></div>
+            <div id="bubble1" onload="renderBubble1()">
+            </div>            
           </div>
         </div>
       </div>
@@ -153,9 +156,11 @@
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!--    bootstrap.load_js()-->
+<!--
+
 <script src="static/js/render_charts.js"></script>
-<script src="static/js/render_bubbles.js"></script>
 <script>fetchAndRenderTrend1Chart("FL")</script>
-<script>generateBubbleText1("Cloudy", "FL")</script>
+-->
+
 </body>
 </html>
