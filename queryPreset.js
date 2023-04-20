@@ -85,23 +85,53 @@ async function accidentsPerTimeIntervals(zip_code) {
 }
 
 // Query 5: How does the severity of accidents change in the presence of different traffic calming methods?
-async function severityToTrafficCalming(trafficFeature) {
+async function severityToTrafficCalming(trafficFeature, severityFilter) {
     const connection = await OracleDB.getConnection();
     try {
+        // const query = "SELECT a.severity, COUNT(*) AS count " +
+        //     "FROM accident a " +
+        //     "JOIN trafficjam t ON a.id = t.id " +
+        //     "WHERE t." + trafficFeature + " = 'True' " +
+        //     "AND a.severity IN (` + severityFilter.join(\", \") + `)"
+        //     "GROUP BY a.severity " +
+        //     "ORDER BY a.severity";
         const query = "SELECT a.severity, COUNT(*) AS count " +
             "FROM accident a " +
             "JOIN trafficjam t ON a.id = t.id " +
             "WHERE t." + trafficFeature + " = 'True' " +
+            "AND a.severity IN (" + severityFilter + ") " +
             "GROUP BY a.severity " +
             "ORDER BY a.severity";
+    // const query =
+    //   SELECT a.severity, COUNT(*) AS Accident_Count
+    //   FROM accident a
+    //   JOIN climate c ON a.id=c.id
+    //   JOIN address ad ON c.id=ad.id
+    //   WHERE Weather_Condition = traffic
+    //   AND a.severity IN (` + severityFilter.join(", ") + `)
+    //   GROUP BY a.severity
+    //   ORDER BY a.severity";
+    //     const result = await connection.execute(query, {trafficFeature: trafficFeature});
         const result = await connection.execute(query);
+        // const result = await connection.execute(query, { weather: weather, state: state });
 
+        console.log(result)
         return result;
     } finally {
         connection.close();
     }
 }
 
+// const query = `
+//       SELECT a.severity, COUNT(*) AS Accident_Count
+//       FROM accident a
+//       JOIN climate c ON a.id=c.id
+//       JOIN address ad ON c.id=ad.id
+//       WHERE Weather_Condition = :weather AND State = :state
+//       AND a.severity IN (` + severityFilter.join(", ") + `)
+//       GROUP BY a.severity
+//       ORDER BY a.severity
+//     `;
 
 module.exports = {
     severityToTimeIntervals,

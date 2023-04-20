@@ -50,37 +50,6 @@
                 </div>
             </div>
         </div>
-        <!--todo adjust sizes of boxes-->
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card_stats">
-                    <div class="card-body">
-                        Row 2 - Block 1
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card_stats">
-                    <div class="card-body">
-                        Row 2 - Block 2
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card_stats">
-                    <div class="card-body">
-                        Row 2 - Block 3
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card_stats">
-                    <div class="card-body">
-                        Row 2 - Block 4
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-md-12">
@@ -89,7 +58,6 @@
                         <canvas id="trend2Chart"></canvas>
                     </div>
                     <div>
-                        <h1>Toggle Severity Levels</h1>
                         <form id="severityForm">
                             <label>
                                 <input type="checkbox" name="severity" value="1" checked> Severity 1
@@ -285,11 +253,8 @@
         event.preventDefault();
         const formData = new FormData(form);
         const selectedSeverities = formData.getAll('severity').join(',');
-        // <button onClick="updateTrend2Chart(document.getElementById('weather').value,
-        //                  document.getElementById('state').value, selectedSeverities )">Update</button>
         updateTrend2Chart(document.getElementById('weather').value,
             document.getElementById('state').value, selectedSeverities)
-        // Use the `selectedSeverities` variable in your code to pass it to your API call.
     });
 </script>
 <script>

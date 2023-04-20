@@ -50,37 +50,6 @@
                 </div>
             </div>
         </div>
-        <!--todo adjust sizes of boxes-->
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card_stats">
-                    <div class="card-body">
-                        Row 2 - Block 1
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card_stats">
-                    <div class="card-body">
-                        Row 2 - Block 2
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card_stats">
-                    <div class="card-body">
-                        Row 2 - Block 3
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card_stats">
-                    <div class="card-body">
-                        Row 2 - Block 4
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-md-12">
@@ -88,6 +57,21 @@
                     <div class="graph">
                         <canvas id="severityChart"></canvas>
                     </div>
+                    <form id="severityForm">
+                        <label>
+                            <input type="checkbox" name="severity" value="1" checked> Severity 1
+                        </label>
+                        <label>
+                            <input type="checkbox" name="severity" value="2" checked> Severity 2
+                        </label>
+                        <label>
+                            <input type="checkbox" name="severity" value="3" checked> Severity 3
+                        </label>
+                        <label>
+                            <input type="checkbox" name="severity" value="4" checked> Severity 4
+                        </label>
+                        <button type="submit">Submit</button>
+                    </form>
                     <div>
                         <select id="trafficFeatures">
                             <option value="TRAFFIC_SIGNAL">Traffic Signal</option>
@@ -103,7 +87,7 @@
                             <option value="STOP">Stop</option>
                             <option value="CROSSING">Crossing</option>
                         </select>
-                        <button onclick="updateTrend5Chart(getSelectedTrafficFeature())">Update Chart</button>
+<!--                        <button onclick="updateTrend5Chart(getSelectedTrafficFeature())">Update Chart</button>-->
                     </div>
                 </div>
             </div>
@@ -115,6 +99,24 @@
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!--    bootstrap.load_js()-->
 <script src="static/js/render_charts.js"></script>
-<script>fetchAndRenderTrend5Chart("CROSSING")</script>
+<script>fetchAndRenderTrend5Chart("TRAFFIC_SIGNAL", "1,2,3,4")</script>
+<script>
+    const form = document.getElementById('severityForm');
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const selectedSeverities = formData.getAll('severity').join(',');
+        updateTrend5Chart(getSelectedTrafficFeature(), selectedSeverities)
+    });
+</script>
+<script>
+    document.getElementById("severityForm").addEventListener("submit", function(event) {
+        const checkboxes = document.querySelectorAll('input[name="severity"]:checked');
+        if (checkboxes.length === 0) {
+            event.preventDefault();
+            alert("Please select at least one severity level.");
+        }
+    });
+</script>
 </body>
 </html>
